@@ -66,6 +66,8 @@
         [NSThread exit]; // 线程强制终止，写在那个子线程方法内，终止哪个子线程
         NSLog(@"对象方法创建-block-当前线程为：%@",isResult?@"子线程":@"主线程");
     }];
+    thread1.name = @"thread1";
+    thread2.name = @"thread2";
     // 线程优先级，值范围0.0~1.0，默认0.5
     thread1.threadPriority = 0.2;
     thread2.threadPriority = 1.0;
@@ -80,6 +82,8 @@
         if ([argument isKindOfClass:[NSDictionary class]]) {
             NSLog(@"key：%@",[argument valueForKey:@"key"]);
         }
+        
+        NSLog(@"线程name==%@",[NSThread currentThread].name);
         // 线程取消
         for (int i = 0; i<200; i++) {
             NSLog(@"%d",i);
