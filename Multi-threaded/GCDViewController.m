@@ -32,7 +32,22 @@
    串行+同步：不新开线程，任务一个接一个执行
  
  - 线程死锁：两个线程相互等待，两个线程都不执行任务
-    为了防止线程死锁(一条线程在执行任务的过程中，另一条线程也来执行此任务)，我们需要在一条线程操作时，加锁，线程操作结束时解锁。这样就不会造成两个线程执行同一任务
+ - 为了防止线程死锁，避免在系统创建的串行队列中，添加同步任务。
+ 
+ - 添加同步任务：
+    - 添加同步任务，到系统创建的串行队列中，会造成**线程死锁**。
+    - 添加同步任务，到手动创建的串行队列中，执行任务在主线程。
+    - 添加同步任务，到系统创建的并行队列中，执行任务在主线程。
+    - 添加同步任务，到手动创建的并行队列中，执行任务在主线程。
+ - 添加异步任务：
+    - 添加异步任务，到系统创建的串行队列中，执行任务在主线程。
+    - 添加异步任务，到手动创建的串行队列中，执行任务在子线程
+    - 添加异步任务，到系统创建的并行队列中，执行任务在子线程。
+    - 添加异步任务，到手动创建的并行队列中，执行任务在子线程。
+ - 总的来说：
+    - **添加同步任务，不管在串行还是在并行队列中，所执行的任务都是在主线程中操作。**
+    - **添加同步任务到系统创建的串行队列中，将会造成线程死锁。**
+    - **添加异步任务**，如果添加到**系统创建的串行队列**中，那么，所执行的任务都是在**主线程中**操作；而将异步任务添加到**手动创建的队列**中，那么，所执行的任务都是**在子线程中操作**。因此，一般使用手动创建的串行队列。
  */
 @implementation GCDViewController
 
@@ -40,16 +55,23 @@
     [super viewDidLoad];
     self.title = @"GCD";
     self.view.backgroundColor = [UIColor whiteColor];
-
+    // 串行队列
     [self creatSerialQuere];
+    NSLog(@"-------------------");
     
+    // 并行队列
     [self creatConcurrentQuere];
     
+    // 线程死锁
 //    [self testThreadLock];
+    
+    // 线程安全
+    [self threadSafe];
     
     
     // Do any additional setup after loading the view.
 }
+
 #pragma mark - 串行队列
 - (void)creatSerialQuere{
     // 1.串行队列有两种获取方式
@@ -62,24 +84,22 @@
     dispatch_queue_t queueSerialSecond = dispatch_queue_create("com.wangsk.second", DISPATCH_QUEUE_SERIAL);
     
     // 2. 添加任务
-    // 2.1 异步添加任务
+    // 2.1 添加异步任务
     dispatch_async(queueSerialSecond, ^{
-        NSLog(@"串行队列中，异步添加任务，任务内容");
+        NSLog(@"2.1串行队列中，添加异步任务，任务内容");
         BOOL isResult = [[NSThread currentThread]isMainThread];
-        NSLog(@"当前线程为：%@",isResult?@"主线程":@"子线程");
+        NSLog(@"2.1当前线程为：%@",isResult?@"主线程":@"子线程");
     });
-    // 2.2 同步添加任务
+    // 2.2 添加同步任务
     dispatch_sync(queueSerialSecond, ^{
-        NSLog(@"串行队列中，同步添加任务，任务内容");
+        NSLog(@"2.2串行队列中，添加同步任务，任务内容");
         BOOL isResult = [[NSThread currentThread]isMainThread];
-        NSLog(@"当前线程为：%@",isResult?@"主线程":@"子线程");
+        NSLog(@"2.2当前线程为：%@",isResult?@"主线程":@"子线程");
     });
     
     // 3. 释放队列，MRC模式下需要
 //    dispatch_release(queueSerialSecond);
     
-//    同步添加任务，不管在任何情况下，所执行的任务都是在主线程中操作；
-//    异步添加任务，如果添加到系统创建的串行队列中，那么，所执行的任务都是在主线程中操作；而将异步任务添加到手动创建的队列中，那么，所执行的任务都是在子线程中操作。因此，一般使用手动创建的串行队列。
 }
 
 #pragma mark - 并行队列
@@ -93,19 +113,25 @@
     dispatch_queue_t concurrentQuereSecond = dispatch_queue_create("com.wangsk.concurrent", DISPATCH_QUEUE_CONCURRENT);
     
     // 2. 添加任务
-    // 添加异步任务
+    // 2.1添加异步任务
     dispatch_async(concurrentQuereSecond, ^{
-        NSLog(@"串行队列，异步添加任务，任务内容");
+        NSLog(@"2.1并行队列，添加异步任务，任务内容");
         BOOL isResult = [[NSThread currentThread]isMainThread];
-        NSLog(@"当前线程为：%@",isResult?@"主线程":@"子线程");
+        NSLog(@"2.1当前线程为：%@",isResult?@"主线程":@"子线程");
         //如果执行完子线程任务之后，回到主线程去执行任务 异步任务
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"返回主线程，执行UI界面刷新等操作");
+            NSLog(@"2.1返回主线程，执行UI界面刷新等操作");
             BOOL isResult = [[NSThread currentThread]isMainThread];
-            NSLog(@"当前线程为：%@",isResult?@"主线程":@"子线程");
+            NSLog(@"2.1-当前线程为：%@",isResult?@"主线程":@"子线程");
         });
     });
-    
+    // 2.2添加同步任务
+    dispatch_sync(concurrentQuereSecond, ^{
+        NSLog(@"2.2并行队列，添加同步任务，任务内容");
+        BOOL isResult = [[NSThread currentThread]isMainThread];
+        NSLog(@"2.2当前线程为：%@",isResult?@"主线程":@"子线程");
+
+    });
     // 3. 释放队列，MRC模式下需要
 //    dispatch_release(concurrentQuereSecond);
     
@@ -117,13 +143,26 @@
     dispatch_sync(quere, ^{
         NSLog(@"输出>>>>");
     });
-    // 加锁，避免线程死锁
-    NSLock *oneLock = [[NSLock alloc]init];
-    [oneLock lock]; // 加锁
-    [oneLock unlock]; // 解锁
 }
 
-
+#pragma mark - 线程安全
+- (void)threadSafe{
+    
+    /*
+     在GCD中提供了一种信号机制，也可以解决资源抢占问题（和同步锁的机制并不一样)
+     GCD中信号量是dispatch_semaphore_t类型，支持信号通知和信号等待。
+     每当发送一个信号通知，则信号量+1；每当发送一个等待信号时信号量-1,；如果信号量为0则信号会处于等待状态，直到信号量大于0开始执行。
+     根据这个原理我们可以初始化一个信号量变量，默认信号量设置为1，每当有线程进入“加锁代码”之后就调用信号等待命令（此时信号量为0）开始等待，此时其他线程无法进入，执行完后发送信号通知（此时信号量为1），其他线程开始进入执行，如此一来就达到了线程同步目的。
+     */
+    // 如果利用信号量进行线程的加解锁，信号量初始值应当设置为1，这里为了测试，设置的值为3，orig为3
+    dispatch_semaphore_t semapore_t = dispatch_semaphore_create(3); // value = 3,orig = 3
+    
+    // 发出等待信号，信号量-1，value值发生改变，value为0，加锁
+    dispatch_semaphore_wait(semapore_t, DISPATCH_TIME_FOREVER); // value = 2,orig = 3
+    
+    // 发出信号，信号量+1，value值发生改变，解锁
+    dispatch_semaphore_signal(semapore_t); // value = 3,orig = 3
+}
 
 
 - (void)didReceiveMemoryWarning {
