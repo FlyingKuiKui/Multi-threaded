@@ -30,7 +30,7 @@
     [super viewDidLoad];
     self.title = @"NSThread/NSObject";
     self.view.backgroundColor = [UIColor whiteColor];
-    
+    NSLog(@"NSThread/NSObject主线程打印");
     [self creatThreadWithNSThreadFirst];
     
     [self creatThreadWithNSThreadSecond];
@@ -81,12 +81,12 @@
             NSLog(@"key：%@",[argument valueForKey:@"key"]);
         }
         // 线程取消
-        for (int i = 0; i<2000; i++) {
+        for (int i = 0; i<200; i++) {
             NSLog(@"%d",i);
             if (self.thread.cancelled) {
                 break;
             }
-            if (i == 200) {
+            if (i == 20) {
                 [self.thread cancel];
             }
         }
@@ -109,7 +109,7 @@
     }
 }
 - (void)NSObjectMainThread{
-    
+    NSLog(@"饭糊了");
 }
 
 

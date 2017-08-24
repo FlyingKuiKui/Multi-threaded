@@ -28,7 +28,7 @@
     [super viewDidLoad];
     self.title = @"NSOperationQueue";
     self.view.backgroundColor = [UIColor whiteColor];
-    NSLog(@"开始调用多线程：NSOperationQueue");
+    NSLog(@"NSOperationQueue主线程打印");
     [self creatThreadWithNSOperationQuere];
     
     // Do any additional setup after loading the view.

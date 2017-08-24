@@ -55,6 +55,8 @@
     [super viewDidLoad];
     self.title = @"GCD";
     self.view.backgroundColor = [UIColor whiteColor];
+    NSLog(@"GCD主线程打印");
+
     // 串行队列
     [self creatSerialQuere];
     NSLog(@"-------------------");
