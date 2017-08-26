@@ -19,6 +19,8 @@
 		741064621F4C66F200757473 /* NSThreadAndNSObjectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 741064611F4C66F200757473 /* NSThreadAndNSObjectViewController.m */; };
 		741064651F4C671D00757473 /* NSOperationQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 741064641F4C671D00757473 /* NSOperationQueueViewController.m */; };
 		741064681F4C673200757473 /* GCDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 741064671F4C673200757473 /* GCDViewController.m */; };
+		74647C8F1F4FA9A8008CF7ED /* ThreadSafeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74647C8E1F4FA9A8008CF7ED /* ThreadSafeViewController.m */; };
+		74647C911F502049008CF7ED /* 1.txt in Resources */ = {isa = PBXBuildFile; fileRef = 74647C901F502049008CF7ED /* 1.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +65,9 @@
 		741064641F4C671D00757473 /* NSOperationQueueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSOperationQueueViewController.m; sourceTree = "<group>"; };
 		741064661F4C673200757473 /* GCDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDViewController.h; sourceTree = "<group>"; };
 		741064671F4C673200757473 /* GCDViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDViewController.m; sourceTree = "<group>"; };
+		74647C8D1F4FA9A8008CF7ED /* ThreadSafeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreadSafeViewController.h; sourceTree = "<group>"; };
+		74647C8E1F4FA9A8008CF7ED /* ThreadSafeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThreadSafeViewController.m; sourceTree = "<group>"; };
+		74647C901F502049008CF7ED /* 1.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 1.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +118,7 @@
 		741064291F4C5E6300757473 /* Multi-threaded */ = {
 			isa = PBXGroup;
 			children = (
+				74647C901F502049008CF7ED /* 1.txt */,
 				7410642D1F4C5E6300757473 /* AppDelegate.h */,
 				7410642E1F4C5E6300757473 /* AppDelegate.m */,
 				741064301F4C5E6300757473 /* ViewController.h */,
@@ -125,6 +131,8 @@
 				741064641F4C671D00757473 /* NSOperationQueueViewController.m */,
 				741064661F4C673200757473 /* GCDViewController.h */,
 				741064671F4C673200757473 /* GCDViewController.m */,
+				74647C8D1F4FA9A8008CF7ED /* ThreadSafeViewController.h */,
+				74647C8E1F4FA9A8008CF7ED /* ThreadSafeViewController.m */,
 				741064331F4C5E6400757473 /* Main.storyboard */,
 				741064361F4C5E6400757473 /* Assets.xcassets */,
 				741064381F4C5E6400757473 /* LaunchScreen.storyboard */,
@@ -269,6 +277,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74647C911F502049008CF7ED /* 1.txt in Resources */,
 				7410643A1F4C5E6400757473 /* LaunchScreen.storyboard in Resources */,
 				741064371F4C5E6400757473 /* Assets.xcassets in Resources */,
 				741064351F4C5E6400757473 /* Main.storyboard in Resources */,
@@ -299,6 +308,7 @@
 				741064651F4C671D00757473 /* NSOperationQueueViewController.m in Sources */,
 				741064321F4C5E6300757473 /* ViewController.m in Sources */,
 				7410645F1F4C66AA00757473 /* PThreadViewController.m in Sources */,
+				74647C8F1F4FA9A8008CF7ED /* ThreadSafeViewController.m in Sources */,
 				741064621F4C66F200757473 /* NSThreadAndNSObjectViewController.m in Sources */,
 				741064681F4C673200757473 /* GCDViewController.m in Sources */,
 				7410642F1F4C5E6300757473 /* AppDelegate.m in Sources */,

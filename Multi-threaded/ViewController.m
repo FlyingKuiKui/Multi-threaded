@@ -12,6 +12,7 @@
 #import "NSThreadAndNSObjectViewController.h" // NShread/NSObject
 #import "NSOperationQueueViewController.h" // NSOperationQueue
 #import "GCDViewController.h"  // GCD
+#import "ThreadSafeViewController.h" // 线程安全
 
 @interface ViewController ()
 
@@ -34,11 +35,13 @@
     UIButton *btn2 = [self creatBtnWithY:150 Title:@"NShread/NSObject"];
     UIButton *btn3 = [self creatBtnWithY:200 Title:@"NSOperationQueue"];
     UIButton *btn4 = [self creatBtnWithY:250 Title:@"GCD"];
+    UIButton *btn5 = [self creatBtnWithY:300 Title:@"线程安全"];
 
     [self.view addSubview:btn1];
     [self.view addSubview:btn2];
     [self.view addSubview:btn3];
     [self.view addSubview:btn4];
+    [self.view addSubview:btn5];
 
 //    [self verifyTheCurrentThread];
     
@@ -79,6 +82,10 @@
         // GCD
         GCDViewController *thread4 = [[GCDViewController alloc]init];
         [self.navigationController pushViewController:thread4 animated:NO];
+    }else if (btn.tag == 300){
+        // GCD
+        ThreadSafeViewController *threadSafe = [[ThreadSafeViewController alloc]init];
+        [self.navigationController pushViewController:threadSafe animated:NO];
     }
 }
 

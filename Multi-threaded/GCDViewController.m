@@ -67,9 +67,7 @@
     // 线程死锁
 //    [self testThreadLock];
     
-    // 线程安全
-    [self threadSafe];
-    
+        
     
     // Do any additional setup after loading the view.
 }
@@ -147,24 +145,6 @@
     });
 }
 
-#pragma mark - 线程安全
-- (void)threadSafe{
-    
-    /*
-     在GCD中提供了一种信号机制，也可以解决资源抢占问题（和同步锁的机制并不一样)
-     GCD中信号量是dispatch_semaphore_t类型，支持信号通知和信号等待。
-     每当发送一个信号通知，则信号量+1；每当发送一个等待信号时信号量-1,；如果信号量为0则信号会处于等待状态，直到信号量大于0开始执行。
-     根据这个原理我们可以初始化一个信号量变量，默认信号量设置为1，每当有线程进入“加锁代码”之后就调用信号等待命令（此时信号量为0）开始等待，此时其他线程无法进入，执行完后发送信号通知（此时信号量为1），其他线程开始进入执行，如此一来就达到了线程同步目的。
-     */
-    // 如果利用信号量进行线程的加解锁，信号量初始值应当设置为1，这里为了测试，设置的值为3，orig为3
-    dispatch_semaphore_t semapore_t = dispatch_semaphore_create(3); // value = 3,orig = 3
-    
-    // 发出等待信号，信号量-1，value值发生改变，value为0，加锁
-    dispatch_semaphore_wait(semapore_t, DISPATCH_TIME_FOREVER); // value = 2,orig = 3
-    
-    // 发出信号，信号量+1，value值发生改变，解锁
-    dispatch_semaphore_signal(semapore_t); // value = 3,orig = 3
-}
 
 
 - (void)didReceiveMemoryWarning {
